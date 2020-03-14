@@ -1,0 +1,68 @@
+- name: ensure not running all tasks with sudo
+  fail:
+    msg: "Do not run all tasks with sudo"
+  when:
+    - ansible_env.USER == "root"
+  tags: always
+
+- block:
+    - name: pip3 - install powerline
+      pip:
+        name: powerline-status
+        executable: pip3
+        state: latest
+        extra_args: --user
+      tags: ['pip', 'pip3', 'python']
+      when: not ansible_distribution == "Fedora"
+
+    - name: Fedora - install powerline
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vim-powerline
+      when: ansible_distribution == "Fedora"
+
+  tags: ['vim', 'powerline']
+
+- block:
+    - name: create directories
+      file:
+        path: "{{ ansible_env.HOME }}/{{ item }}"
+        state: directory
+        owner: "{{ ansible_env.USER }}"
+        mode: 0700
+      with_items:
+        - ".vim"
+        - ".vim/bundle"
+
+    - name: clone vundle
+      git:
+        repo: "https://github.com/VundleVim/Vundle.vim.git"
+        dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
+        accept_hostkey: "no"
+        version: "master"
+
+    - name: copy vimrc
+      template:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0600
+      with_items:
+        - vimrc.j2
+
+    - name: install plugins
+      command: 'vim +PluginInstall +qall'
+      tags: plugins
+
+    - name: copy supplemental file(s)
+      copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.vim/{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0600
+      with_items:
+        - filetype.vim
+
+  tags: vim
