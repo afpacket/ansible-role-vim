@@ -57,8 +57,8 @@
       tags: plugins
 
     - name: copy supplemental file(s)
-      copy:
-        src: "{{ item }}"
+      template:
+        src: "{{ item }}.j2"
         dest: "{{ ansible_env.HOME }}/.vim/{{ item }}"
         owner: "{{ ansible_env.USER }}"
         mode: 0600
