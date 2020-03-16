@@ -45,12 +45,12 @@
 
     - name: copy vimrc
       template:
-        src: "{{ item }}"
+        src: "{{ item }}.j2"
         dest: "{{ ansible_env.HOME }}/.{{ item }}"
         owner: "{{ ansible_env.USER }}"
         mode: 0600
       with_items:
-        - vimrc.j2
+        - vimrc
 
     - name: install plugins
       command: 'vim +PluginInstall +qall'
