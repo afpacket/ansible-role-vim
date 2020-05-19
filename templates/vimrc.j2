@@ -53,6 +53,9 @@ filetype plugin indent on    " required
 
 syntax on
 
+{% if ansible_distribution == "MacOSX" %}
+let $PYTHONPATH='{{ ansible_env.HOME }}/Library/Python/{{ansible_python.version.major}}.{{ansible_python.version.minor}}/lib/python/site-packages'
+{% endif %}
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
