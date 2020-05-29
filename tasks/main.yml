@@ -6,21 +6,27 @@
   tags: always
 
 - block:
-    - name: pip3 - install powerline
+    - name: pip3 - install black, powerline
       pip:
-        name: powerline-status
+        name: "{{ ansible_loop.allitems }}"
         executable: pip3
         state: latest
         extra_args: --user
+      loop_control:
+        extended: yes
+      loop:
+        - black
+        - powerline-status
       tags: ['pip', 'pip3', 'python']
       when: not ansible_distribution == "Fedora"
 
-    - name: Fedora - install powerline
+    - name: Fedora - install black, powerline
       become: yes
       package:
         name: "{{ item }}"
         state: present
       with_items:
+        - black
         - vim-powerline
       when: ansible_distribution == "Fedora"
 
@@ -35,14 +41,14 @@
         mode: 0700
       with_items:
         - ".vim"
-        - ".vim/bundle"
+        - ".vim/autoload"
 
-    - name: clone vundle
-      git:
-        repo: "https://github.com/VundleVim/Vundle.vim.git"
-        dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
-        accept_hostkey: "no"
-        version: "master"
+    - name: vim-plug - plug.vim
+      get_url:
+        url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+        dest: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0640
 
     - name: copy vimrc
       template:
@@ -54,7 +60,7 @@
         - vimrc
 
     - name: install plugins
-      command: 'vim +PluginInstall +qall'
+      command: 'vim +PlugInstall +qall'
       tags: plugins
 
     - name: copy supplemental file(s)
