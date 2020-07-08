@@ -10,7 +10,7 @@ Example Playbook
 - hosts: localhost
   connection: local
   vars:
-    ansible_python_interpreter: "/usr/bin/python3"
+    ansible_python_interpreter: "/usr/local/bin/python3"
   roles:
     - { role: afpacket.vim }
 ```
