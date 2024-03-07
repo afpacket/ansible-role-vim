@@ -6,7 +6,7 @@
   tags: always
 
 - block:
-    - name: pip3 - install black, powerline
+    - name: pip3 - install black
       pip:
         name: "{{ ansible_loop.allitems }}"
         executable: pip3
@@ -16,21 +16,19 @@
         extended: yes
       loop:
         - black
-        - powerline-status
       tags: ['pip', 'pip3', 'python']
       when: not ansible_distribution == "Fedora"
 
-    - name: Fedora - install black, powerline
+    - name: Fedora - install black
       become: yes
       package:
-        name: "{{ item }}"
+        name:
+          - black
         state: present
-      with_items:
-        - black
-        - vim-powerline
+      tags: ['black', 'airline']
       when: ansible_distribution == "Fedora"
 
-  tags: ['vim', 'powerline']
+  tags: ['black', 'vim']
 
 - block:
     - name: create directories
