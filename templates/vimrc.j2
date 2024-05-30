@@ -24,6 +24,9 @@ set t_Co=256
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
+" do not auto indent comments in yaml
+autocmd FileType yaml,yaml.ansible setlocal indentkeys-=0#
+
 " plugin options
 let g:airline_powerline_fonts=1
 let g:terraform_fmt_on_save=1
