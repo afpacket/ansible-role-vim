@@ -1,5 +1,5 @@
 - name: ensure not running all tasks with sudo
-  fail:
+  ansible.builtin.fail:
     msg: "Do not run all tasks with sudo"
   when:
     - ansible_env.USER == "root"
@@ -21,7 +21,7 @@
 
     - name: Fedora - install packages
       become: yes
-      package:
+      ansible.builtin.package:
         name:
           - black
           - powerline-fonts
@@ -33,7 +33,7 @@
 
 - block:
     - name: create directories
-      file:
+      ansible.builtin.file:
         path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory
         owner: "{{ ansible_env.USER }}"
@@ -43,7 +43,7 @@
         - ".vim/autoload"
 
     - name: vim-plug - plug.vim
-      get_url:
+      ansible.builtin.get_url:
         url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
         dest: "{{ item }}"
         owner: "{{ ansible_env.USER }}"
@@ -52,7 +52,7 @@
         - "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
 
     - name: copy vimrc
-      template:
+      ansible.builtin.template:
         src: "{{ item }}.j2"
         dest: "{{ ansible_env.HOME }}/.{{ item }}"
         owner: "{{ ansible_env.USER }}"
@@ -61,18 +61,18 @@
         - vimrc
 
     - name: copy nvim init.vim
-      template:
+      ansible.builtin.template:
         src: "nvim-init.vim.j2"
         dest: "{{ ansible_env.HOME }}/.config/nvim/init.vim"
         owner: "{{ ansible_env.USER }}"
         mode: 0600
 
     - name: install plugins
-      command: 'vim +PlugInstall +qall'
+      ansible.builtin.command: 'vim +PlugInstall +qall'
       tags: plugins
 
     - name: copy supplemental file(s)
-      template:
+      ansible.builtin.template:
         src: "{{ item }}.j2"
         dest: "{{ ansible_env.HOME }}/.vim/{{ item }}"
         owner: "{{ ansible_env.USER }}"
