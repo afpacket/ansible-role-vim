@@ -19,11 +19,12 @@
       tags: ['pip', 'pip3', 'python']
       when: not ansible_distribution == "Fedora"
 
-    - name: Fedora - install black
+    - name: Fedora - install packages
       become: yes
       package:
         name:
           - black
+          - powerline-fonts
         state: present
       tags: ['black', 'airline']
       when: ansible_distribution == "Fedora"
