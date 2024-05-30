@@ -5,6 +5,9 @@ Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-terraform'
 Plug 'hashivim/vim-vaultproject'
 Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 {% if not (ansible_distribution in ["CentOS", "RedHat"] and ansible_distribution_major_version <= "7") %}
 Plug 'fatih/vim-go'
 Plug 'psf/black', { 'branch': 'stable' }
@@ -13,12 +16,6 @@ call plug#end()
 
 syntax on
 
-{% if ansible_distribution == "MacOSX" %}
-let $PYTHONPATH='{{ ansible_env.HOME }}/Library/Python/{{ansible_python.version.major}}.{{ansible_python.version.minor}}/lib/python/site-packages'
-{% endif %}
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
@@ -28,4 +25,5 @@ set t_Co=256
 set backspace=indent,eol,start
 
 " plugin options
+let g:airline_powerline_fonts=1
 let g:terraform_fmt_on_save=1

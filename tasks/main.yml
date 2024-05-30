@@ -6,7 +6,7 @@
   tags: always
 
 - block:
-    - name: pip3 - install black, powerline
+    - name: pip3 - install black
       pip:
         name: "{{ ansible_loop.allitems }}"
         executable: pip3
@@ -16,21 +16,20 @@
         extended: yes
       loop:
         - black
-        - powerline-status
       tags: ['pip', 'pip3', 'python']
       when: not ansible_distribution == "Fedora"
 
-    - name: Fedora - install black, powerline
+    - name: Fedora - install packages
       become: yes
       package:
-        name: "{{ item }}"
+        name:
+          - black
+          - powerline-fonts
         state: present
-      with_items:
-        - black
-        - vim-powerline
+      tags: ['black', 'airline']
       when: ansible_distribution == "Fedora"
 
-  tags: ['vim', 'powerline']
+  tags: ['black', 'vim']
 
 - block:
     - name: create directories
@@ -46,9 +45,11 @@
     - name: vim-plug - plug.vim
       get_url:
         url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-        dest: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
+        dest: "{{ item }}"
         owner: "{{ ansible_env.USER }}"
         mode: 0640
+      loop:
+        - "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
 
     - name: copy vimrc
       template:
@@ -58,6 +59,13 @@
         mode: 0600
       with_items:
         - vimrc
+
+    - name: copy nvim init.vim
+      template:
+        src: "nvim-init.vim.j2"
+        dest: "{{ ansible_env.HOME }}/.config/nvim/init.vim"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0600
 
     - name: install plugins
       command: 'vim +PlugInstall +qall'
