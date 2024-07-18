@@ -48,6 +48,7 @@
       with_items:
         - ".vim"
         - ".vim/autoload"
+        - ".config/nvim"
 
     - name: vim-plug - plug.vim
       ansible.builtin.get_url:
