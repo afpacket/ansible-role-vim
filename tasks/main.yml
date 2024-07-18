@@ -6,18 +6,20 @@
   tags: always
 
 - block:
-    #- name: pip3 - install black
-    #  pip:
-    #    name: "{{ ansible_loop.allitems }}"
-    #    executable: pip3
-    #    state: latest
-    #    extra_args: --user
-    #  loop_control:
-    #    extended: yes
-    #  loop:
-    #    - black
-    #  tags: ['pip', 'pip3', 'python']
-    #  when: not ansible_distribution == "Fedora"
+    - name: Linux - install black (pip3)
+      pip:
+        name: "{{ ansible_loop.allitems }}"
+        executable: pip3
+        state: latest
+        extra_args: '--user --upgrade --no-cache-dir'
+      loop_control:
+        extended: yes
+      loop:
+        - black
+      tags: ['pip', 'pip3', 'python']
+      when:
+        - ansible_facts['system'] == "Linux"
+        - not ansible_facts['distribution'] == "Fedora"
 
     - name: Linux - install packages
       become: yes
@@ -27,10 +29,15 @@
           - neovim
           - powerline-fonts
         state: present
-      tags: ['black', 'airline']
       when: ansible_facts['os_family'] == "RedHat"
 
-  tags: ['black', 'vim']
+    - name: Linux - install packages (Fedora)
+      become: yes
+      ansible.builtin.dnf:
+        name:
+          - black
+        state: present
+      when: ansible_distribution == "Fedora"
 
 - block:
     - name: create directories
