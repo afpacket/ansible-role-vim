@@ -19,7 +19,7 @@
     #  tags: ['pip', 'pip3', 'python']
     #  when: not ansible_distribution == "Fedora"
 
-    - name: Fedora - install packages
+    - name: Linux - install packages
       become: yes
       ansible.builtin.package:
         name:
@@ -27,7 +27,7 @@
           - powerline-fonts
         state: present
       tags: ['black', 'airline']
-      when: ansible_distribution == "Fedora"
+      when: ansible_facts['os_family'] == "RedHat"
 
   tags: ['black', 'vim']
 
