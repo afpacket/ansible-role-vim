@@ -25,7 +25,6 @@
       become: yes
       ansible.builtin.package:
         name:
-          - black
           - neovim
           - powerline-fonts
         state: present
