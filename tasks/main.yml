@@ -25,6 +25,7 @@
       become: yes
       ansible.builtin.package:
         name:
+          - golang-x-tools-gopls
           - neovim
           - powerline-fonts
         state: present
