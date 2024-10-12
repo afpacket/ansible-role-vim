@@ -90,3 +90,9 @@
         - filetype.vim
 
   tags: vim
+
+- name: zellij - import tasks
+  import_tasks: zellij.yml
+  when: zellij|bool
+  tags: zellij
+
