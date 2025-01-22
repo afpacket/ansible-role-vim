@@ -1,0 +1,62 @@
+- name: zellij - set fact for package suffix (linux)
+  ansible.builtin.set_fact:
+    zellij_package_suffix: "unknown-linux-musl"
+  when: ansible_facts['system'] == "Linux"
+
+- name: zellij - set fact for package suffix (MacOS) 
+  ansible.builtin.set_fact:
+    zellij_package_suffix: "apple-darwin"
+  when: ansible_facts['system'] == "Darwin"
+
+- name: zellij - download checksum file 
+  ansible.builtin.get_url:
+    url: "https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.sha256sum" 
+    dest: "/usr/local/src/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.sha256sum" 
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: zellij - download archive 
+  ansible.builtin.get_url:
+    url: "https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.tar.gz"
+    dest: "/usr/local/src/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.tar.gz"
+    owner: root
+    group: root
+    mode: '0644'
+
+# the published checksum is that of the binary and not the archive for some reason, so unarchive before verifying
+- name: zellij - unarchive 
+  ansible.builtin.unarchive:
+    src: "/usr/local/src/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.tar.gz" 
+    dest: /usr/local/src
+    remote_src: yes
+
+- name: zellij - verify checksum
+  ansible.builtin.command:
+    cmd: "sha256sum -c zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.sha256sum --ignore-missing --quiet"
+    chdir: '/usr/local/src'
+  register: zellij_integrity_check
+  failed_when: zellij_integrity_check.rc != 0
+
+- name: copy zellij to /usr/local/bin
+  ansible.builtin.copy:
+    src: /usr/local/src/zellij
+    dest: /usr/local/bin/zellij
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: true
+
+- name: zellij - cleanup
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/usr/local/src/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.sha256sum"
+    - "/usr/local/src/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.tar.gz"
+    - "/usr/local/src/zellij"
+
+# https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.sha256sum
+# https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-{{ ansible_facts['architecture'] }}-{{ zellij_package_suffix }}.tar.gz
+#
+# https://github.com/zellij-org/zellij/releases/download/v0.40.1/zellij-aarch64-apple-darwin.tar.gz
