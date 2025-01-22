@@ -47,7 +47,7 @@
     mode: '0755'
     remote_src: true
 
-- name: vault - cleanup
+- name: zellij - cleanup
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
