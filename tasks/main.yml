@@ -36,6 +36,7 @@
       ansible.builtin.dnf:
         name:
           - black
+          - uv
         state: present
       when: ansible_distribution == "Fedora"
 
