@@ -1,4 +1,6 @@
-return {
-   cmd = { "pyright" },
-   filetypes = { "py" },
-}
+--return {
+--   cmd = { "pyright" },
+--   filetypes = { "py" },
+--}
+
+vim.lsp.enable('pyright')
