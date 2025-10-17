@@ -28,7 +28,6 @@
           - gcc
           - git
           - golang-x-tools-gopls
-          - neovim
           - "{{ nodejs_package_name }}"
           - powerline-fonts
         state: present
@@ -39,6 +38,7 @@
       ansible.builtin.dnf:
         name:
           - black
+          - neovim
           - uv
         state: present
       when: ansible_distribution == "Fedora"
