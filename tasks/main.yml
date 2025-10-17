@@ -75,6 +75,7 @@
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/options.lua'
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
+        - 'config/nvim/lua/plugins/nvim-treesitter.lua'
         - 'config/nvim/lua/plugins/vim-terraform.lua'
 
     #- name: copy neovim config file template(s)
