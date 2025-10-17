@@ -74,6 +74,7 @@
         - 'config/nvim/init.lua'
         - 'config/nvim/lsp/python.lua'
         - 'config/nvim/lua/config/lazy.lua'
+        - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
         - 'config/nvim/lua/plugins/nvim-treesitter.lua'
