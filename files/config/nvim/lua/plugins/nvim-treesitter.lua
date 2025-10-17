@@ -12,6 +12,7 @@ return {
                 "lua",
                 "python",
                 "vim",
+                "vimdoc",
                 "yaml",
             },
             highlight = { enable = true },
