@@ -41,3 +41,9 @@ cask 'font-roboto-mono-for-powerline'
 cask 'font-source-code-pro-for-powerline'
 cask 'font-ubuntu-mono-derivative-powerline'
 ```
+
+Neovim config references
+------------------------
+https://m4xshen.dev/posts/build-your-modern-neovim-config-in-lua
+
+https://github.com/bcampolo/nvim-starter-kit
