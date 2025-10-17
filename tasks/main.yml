@@ -25,6 +25,7 @@
       become: true
       ansible.builtin.package:
         name:
+          - git
           - golang-x-tools-gopls
           - neovim
           - "{{ nodejs_package_name }}"
@@ -63,12 +64,12 @@
         - ".config/nvim/lua/plugins"
 
     - name: copy neovim config file(s)
-      ansible.builtin.template:
+      ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ ansible_env.HOME }}/.{{ item }}"
         owner: "{{ ansible_env.USER }}"
         mode: 0600
-      with_items:
+      loop:
         - 'config/nvim/init.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/options.lua'
