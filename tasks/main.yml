@@ -25,6 +25,7 @@
       become: true
       ansible.builtin.package:
         name:
+          - gcc
           - git
           - golang-x-tools-gopls
           - neovim

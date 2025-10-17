@@ -5,9 +5,17 @@ return {
       config = function()
          require("nvim-treesitter.configs").setup({
             auto_install = true,
-            ensure_installed = "all", 
+            ensure_installed = {
+                "bash",
+                "dockerfile",
+                "jinja",
+                "lua",
+                "python",
+                "vim",
+                "yaml",
+            },
             highlight = { enable = true },
-            indent = { enable = true },
+            indent = { enable = false },
          })
       end,
    },
