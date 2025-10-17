@@ -8,7 +8,12 @@ return {
             ensure_installed = {
                 "bash",
                 "dockerfile",
+                "go",
+                "gomod",
+                "gowork",
+                "gosum",
                 "jinja",
+                "json",
                 "lua",
                 "python",
                 "vim",
