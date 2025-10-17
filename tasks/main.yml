@@ -71,10 +71,21 @@
         mode: 0600
       loop:
         - 'config/nvim/init.lua'
+        - 'config/nvim/lsp/python.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/options.lua'
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
         - 'config/nvim/lua/plugins/vim-terraform.lua'
+
+    - name: copy neovim config file template(s)
+      ansible.builtin.template:
+        src: "{{ item }}.j2"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0600
+      loop:
+        - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
+
   tags: vim
 
 - name: zellij - import tasks
