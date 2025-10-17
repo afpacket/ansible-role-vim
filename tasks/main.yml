@@ -72,7 +72,7 @@
         mode: 0600
       loop:
         - 'config/nvim/init.lua'
-        - 'config/nvim/lsp/python.lua'
+        - 'config/nvim/lsp/pyright.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
