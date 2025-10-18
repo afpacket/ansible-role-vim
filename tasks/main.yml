@@ -38,6 +38,8 @@
       ansible.builtin.dnf:
         name:
           - black
+          - cascadia-code-nf-fonts
+          - cascadia-mono-nf-fonts
           - neovim
           - uv
         state: present
