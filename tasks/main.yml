@@ -41,6 +41,7 @@
           - cascadia-code-nf-fonts
           - cascadia-mono-nf-fonts
           - neovim
+          - python3-neovim
           - uv
         state: present
       when: ansible_distribution == "Fedora"
