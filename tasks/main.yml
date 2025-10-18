@@ -92,7 +92,7 @@
     #  loop:
     #    - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
 
-  tags: vim
+  tags: ['vim', 'config']
 
 - name: zellij - import tasks
   import_tasks: zellij.yml
