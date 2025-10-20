@@ -1,6 +1,7 @@
 vim.lsp.enable({
   "gopls",
   "pyright",
+  "terraformls",
 })
 
 vim.keymap.set("n", "<Leader>d", vim.diagnostic.open_float)
