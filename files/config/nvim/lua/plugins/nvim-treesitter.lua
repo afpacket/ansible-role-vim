@@ -12,6 +12,7 @@ return {
                 "gomod",
                 "gowork",
                 "gosum",
+                "hcl",
                 "jinja",
                 "json",
                 "lua",
