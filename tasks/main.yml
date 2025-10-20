@@ -78,6 +78,7 @@
       loop:
         - 'config/nvim/init.lua'
         - 'config/nvim/lsp/pyright.lua'
+        - 'config/nvim/lsp/terraformls.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
