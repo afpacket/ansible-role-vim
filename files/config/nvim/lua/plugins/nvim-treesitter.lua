@@ -16,6 +16,7 @@ return {
                 "json",
                 "lua",
                 "python",
+                "terraform",
                 "vim",
                 "vimdoc",
                 "yaml",
