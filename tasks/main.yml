@@ -46,11 +46,13 @@
         state: present
       when: ansible_distribution == "Fedora"
 
-    - name: Linux - Install pyright node.js package globally
+    - name: Install pyright node.js package globally
       become: true
       community.general.npm:
         name: 'pyright'
         global: true
+
+  tags: ['vim', 'install', 'dependencies']
 
 - block:
     - name: create directories
