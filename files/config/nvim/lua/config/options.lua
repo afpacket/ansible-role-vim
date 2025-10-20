@@ -1,3 +1,4 @@
+vim.g.mapleader = " "
 vim.opt.laststatus = 2
 vim.opt.mouse = ""
 vim.opt.showtabline = 2
