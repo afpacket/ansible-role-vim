@@ -1,9 +1,0 @@
-return {
-  'neovim/nvim-lspconfig',
-{% if ansible_facts['distribution'] in ["CentOS", "RedHat"] and ansible_facts['distribution_major_version'] <= "9" %}
-  tag = "v1.8.0",
-  config = function ()
-    local lspconfig = require('lspconfig')
-  end
-{% endif %}
-}
