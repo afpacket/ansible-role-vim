@@ -13,6 +13,7 @@ return {
                 "gowork",
                 "gosum",
                 "hcl",
+                "helm",
                 "jinja",
                 "json",
                 "lua",
