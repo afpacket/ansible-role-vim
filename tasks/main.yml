@@ -88,6 +88,7 @@
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
+        - 'config/nvim/lua/plugins/init.lua'
         - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
         - 'config/nvim/lua/plugins/nvim-telescope.lua'
