@@ -10,3 +10,8 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.diagnostic.config({
    float = { border = "rounded" },
 })
+
+-- disable lsp syntax highlighting
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
