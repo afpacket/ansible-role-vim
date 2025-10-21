@@ -46,11 +46,16 @@
         state: present
       when: ansible_distribution == "Fedora"
 
-    - name: Install pyright node.js package globally
+    - name: Install node.js packages globally
       become: true
       community.general.npm:
-        name: 'pyright'
+        name: "{{ item }}"
         global: true
+      tags: ['lsp', 'npm']
+      loop:
+        - '@ansible/ansible-language-server'
+        - 'bash-language-server'
+        - 'pyright'
 
   tags: ['vim', 'install', 'dependencies']
 

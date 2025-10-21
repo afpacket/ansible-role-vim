@@ -1,4 +1,6 @@
 vim.lsp.enable({
+  "ansiblels",
+  "bashls",
   "gopls",
   "pyright",
   "terraformls",
