@@ -17,8 +17,13 @@ return {
       lsp_format = "fallback",
     },
     -- Set up format-on-save
-    format_on_save = { 
+    format_on_save = {
       timeout_ms = 500,
+    },
+    formatters = {
+      stylua = {
+        append_args = { "--indent-type", "Spaces", "--indent-width", 2 },
+      },
     },
   },
   init = function()
