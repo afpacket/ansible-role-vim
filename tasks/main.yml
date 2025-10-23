@@ -25,11 +25,13 @@
       become: true
       ansible.builtin.package:
         name:
+          - gcc
+          - git
           - golang-x-tools-gopls
-          - neovim
           - "{{ nodejs_package_name }}"
           - powerline-fonts
-        state: present
+          - ShellCheck
+        state: latest
       when: ansible_facts['os_family'] == "RedHat"
 
     - name: Linux - install packages (Fedora)
@@ -37,15 +39,40 @@
       ansible.builtin.dnf:
         name:
           - black
+          - cascadia-code-nf-fonts
+          - cascadia-mono-nf-fonts
+          - neovim
+          - python3-neovim
           - uv
-        state: present
+        state: latest
       when: ansible_distribution == "Fedora"
 
-    - name: Linux - Install pyright node.js package globally
+    - name: macOS - install homebrew packages
+      community.general.homebrew:
+        name:
+          - 'npm'
+          - 'shellcheck'
+          - 'stylua'
+          - 'yamlfmt'
+        state: latest
+      when: ansible_facts['distribution'] == "MacOSX"
+
+    - name: Install node.js packages globally
       become: true
       community.general.npm:
-        name: 'pyright'
+        name: "{{ item }}"
         global: true
+      tags: ['lsp', 'npm']
+      loop:
+        - '@ansible/ansible-language-server'
+        - 'bash-language-server'
+        - 'pyright'
+
+    - name: Install additional dependencies
+      ansible.builtin.import_tasks: additional_dependencies.yml 
+      tags: ['additional_dependencies']
+
+  tags: ['vim', 'install', 'dependencies']
 
 - block:
     - name: create directories
@@ -54,50 +81,37 @@
         state: directory
         owner: "{{ ansible_env.USER }}"
         mode: 0700
-      with_items:
-        - ".vim"
-        - ".vim/autoload"
-        - ".config/nvim"
-
-    - name: vim-plug - plug.vim
-      ansible.builtin.get_url:
-        url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-        dest: "{{ item }}"
-        owner: "{{ ansible_env.USER }}"
-        mode: 0640
       loop:
-        - "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
+        - ".vim"
+        - ".config/nvim"
+        - ".config/nvim/lsp"
+        - ".config/nvim/lua"
+        - ".config/nvim/lua/config"
+        - ".config/nvim/lua/plugins"
 
-    - name: copy vimrc
-      ansible.builtin.template:
-        src: "{{ item }}.j2"
+    - name: copy neovim config file(s)
+      ansible.builtin.copy:
+        src: "{{ item }}"
         dest: "{{ ansible_env.HOME }}/.{{ item }}"
         owner: "{{ ansible_env.USER }}"
         mode: 0600
-      with_items:
-        - vimrc
+      loop:
+        - 'config/nvim/init.lua'
+        - 'config/nvim/lsp/pyright.lua'
+        - 'config/nvim/lsp/terraformls.lua'
+        - 'config/nvim/lua/config/lazy.lua'
+        - 'config/nvim/lua/config/lsp.lua'
+        - 'config/nvim/lua/config/options.lua'
+        - 'config/nvim/lua/plugins/conform.lua'
+        - 'config/nvim/lua/plugins/init.lua'
+        - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
+        - 'config/nvim/lua/plugins/nvim-lualine.lua'
+        - 'config/nvim/lua/plugins/nvim-telescope.lua'
+        - 'config/nvim/lua/plugins/nvim-treesitter.lua'
+        - 'config/nvim/lua/plugins/vim-fugitive.lua'
+        - 'config/nvim/lua/plugins/vim-terraform.lua'
 
-    - name: copy nvim init.vim
-      ansible.builtin.template:
-        src: "nvim-init.vim.j2"
-        dest: "{{ ansible_env.HOME }}/.config/nvim/init.vim"
-        owner: "{{ ansible_env.USER }}"
-        mode: 0600
-
-    - name: install plugins
-      ansible.builtin.command: 'vim +PlugInstall +qall'
-      tags: plugins
-
-    - name: copy supplemental file(s)
-      ansible.builtin.template:
-        src: "{{ item }}.j2"
-        dest: "{{ ansible_env.HOME }}/.vim/{{ item }}"
-        owner: "{{ ansible_env.USER }}"
-        mode: 0600
-      with_items:
-        - filetype.vim
-
-  tags: vim
+  tags: ['vim', 'config']
 
 - name: zellij - import tasks
   import_tasks: zellij.yml
