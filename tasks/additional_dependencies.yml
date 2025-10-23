@@ -1,0 +1,98 @@
+- block:
+    - block:
+        - name: yamlfmt - get release info
+          ansible.builtin.uri:
+            url: "https://api.github.com/repos/google/yamlfmt/releases/tags/v{{ yamlfmt_version }}"
+            method: GET
+            return_content: true
+            body_format: json
+            status_code: 200
+          register: yamlfmt_release_info
+
+        # they use arm64 for aarch64 but x86_64 is not amd64
+        - name: yamlfmt - set fact for architecture
+          ansible.builtin.set_fact:
+            yamlfmt_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else ansible_facts['architecture'] }}"
+
+        - name: yamlfmt - download archive
+          become: true
+          ansible.builtin.get_url:
+            url: "https://github.com/google/yamlfmt/releases/download/v{{ yamlfmt_version }}/{{ item.name }}"
+            dest: "/usr/local/src/{{ item.name }}"
+            headers:
+              Accept: application/json
+            checksum: "{{ item.digest }}"
+          loop: "{{ yamlfmt_release_info.json.assets }}"
+          when:
+            - "item.name == 'yamlfmt_' + yamlfmt_version + '_' + ansible_facts['system'] + '_' + yamlfmt_arch + '.tar.gz'"
+          register: yamlfmt_download_reponse
+
+        - name: yamlfmt - unarchive
+          become: true
+          ansible.builtin.unarchive:
+            src: "/usr/local/src/yamlfmt_{{ yamlfmt_version }}_{{ ansible_facts['system'] }}_{{ yamlfmt_arch }}.tar.gz"
+            dest: /usr/local/bin
+            remote_src: yes
+
+        - name: yamlfmt - set permissions
+          become: true
+          ansible.builtin.file:
+            path: /usr/local/bin/yamlfmt
+            state: file
+            owner: root
+            group: root
+            mode: 0755
+
+        - name: yamlfmt - cleanup
+          become: true
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - "/usr/local/src/yamlfmt_{{ yamlfmt_version }}_{{ ansible_facts['system'] }}_{{ yamlfmt_arch }}.tar.gz"
+            - "/usr/local/bin/LICENSE"
+            - "/usr/local/bin/README.md"
+
+      when: ansible_facts['system'] == 'Linux'
+      tags: ['yamlfmt']
+
+    - block:
+        - name: stylua - get release info
+          ansible.builtin.uri:
+            url: "https://api.github.com/repos/JohnnyMorganz/StyLua/releases/tags/v{{ stylua_version }}"
+            method: GET
+            return_content: true
+            body_format: json
+            status_code: 200
+          register: stylua_release_info
+
+        - name: stylua - download archive
+          become: true
+          ansible.builtin.get_url:
+            url: "https://github.com/JohnnyMorganz/StyLua/releases/download/v{{ stylua_version }}/{{ item.name }}"
+            dest: "/usr/local/src/{{ item.name }}"
+            headers:
+              Accept: application/json
+            checksum: "{{ item.digest }}"
+          loop: "{{ stylua_release_info.json.assets }}"
+          when:
+            - "item.name == 'stylua-linux-' + ansible_facts['architecture'] + '.zip'"
+          register: stylua_download_reponse
+
+        - name: stylua - unarchive
+          become: true
+          ansible.builtin.unarchive:
+            src: "/usr/local/src/stylua-linux-{{ ansible_facts['architecture'] }}.zip"
+            dest: /usr/local/bin
+            remote_src: yes
+
+        - name: stylua - cleanup
+          become: true
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - "/usr/local/src/stylua-linux-{{ ansible_facts['architecture'] }}.zip"
+      
+      when: ansible_facts['system'] == 'Linux'
+      tags: ['stylua']
