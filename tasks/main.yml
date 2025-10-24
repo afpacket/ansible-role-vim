@@ -28,6 +28,7 @@
           - gcc
           - git
           - golang-x-tools-gopls
+          - python3-isort
           - "{{ nodejs_package_name }}"
           - powerline-fonts
           - ShellCheck
@@ -50,6 +51,7 @@
     - name: macOS - install homebrew packages
       community.general.homebrew:
         name:
+          - 'isort'
           - 'npm'
           - 'shellcheck'
           - 'stylua'
