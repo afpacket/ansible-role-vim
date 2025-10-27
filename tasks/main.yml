@@ -59,6 +59,7 @@
           - 'stylua'
           - 'yamlfmt'
         state: latest
+      tags: ['brew', 'homebrew']
       when: ansible_facts['distribution'] == "MacOSX"
 
     - name: Install node.js packages globally
