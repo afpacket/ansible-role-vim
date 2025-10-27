@@ -1,3 +1,5 @@
+# vim:ft=yaml.ansible
+
 - name: ensure not running all tasks with sudo
   ansible.builtin.fail:
     msg: "Do not run all tasks with sudo"
@@ -6,14 +8,14 @@
   tags: always
 
 - block:
-    - name: Linux - install black (pip3)
-      pip:
+    - name: Linux - install pip packages
+      ansible.builtin.pip::
         name: "{{ ansible_loop.allitems }}"
         executable: pip3
         state: latest
         extra_args: '--user --upgrade --no-cache-dir'
       loop_control:
-        extended: yes
+        extended: true
       loop:
         - ansible-lint
         - black
@@ -74,7 +76,7 @@
         - 'pyright'
 
     - name: Install additional dependencies
-      ansible.builtin.import_tasks: additional_dependencies.yml 
+      ansible.builtin.import_tasks: additional_dependencies.yml
       tags: ['additional_dependencies']
 
   tags: ['vim', 'install', 'dependencies']
@@ -85,7 +87,7 @@
         path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory
         owner: "{{ ansible_env.USER }}"
-        mode: 0700
+        mode: "0700"
       loop:
         - ".vim"
         - ".config/nvim"
@@ -99,7 +101,7 @@
         src: "{{ item }}"
         dest: "{{ ansible_env.HOME }}/.{{ item }}"
         owner: "{{ ansible_env.USER }}"
-        mode: 0600
+        mode: "0600"
       loop:
         - 'config/nvim/init.lua'
         - 'config/nvim/lsp/pyright.lua'
@@ -118,8 +120,7 @@
   tags: ['vim', 'config']
 
 - name: zellij - import tasks
-  import_tasks: zellij.yml
+  ansible.builtin.import_tasks: zellij.yml
   become: true
   when: zellij|bool
   tags: zellij
-
