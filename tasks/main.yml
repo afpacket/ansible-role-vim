@@ -15,6 +15,7 @@
       loop_control:
         extended: yes
       loop:
+        - ansible-lint
         - black
       tags: ['pip', 'pip3', 'python']
       when:
@@ -28,7 +29,6 @@
           - gcc
           - git
           - golang-x-tools-gopls
-          - python3-ansible-lint
           - python3-isort
           - "{{ nodejs_package_name }}"
           - powerline-fonts
@@ -44,6 +44,7 @@
           - cascadia-code-nf-fonts
           - cascadia-mono-nf-fonts
           - neovim
+          - python3-ansible-lint
           - python3-neovim
           - uv
         state: latest
@@ -52,7 +53,6 @@
     - name: macOS - install homebrew packages
       community.general.homebrew:
         name:
-          - 'ansible-lint'
           - 'isort'
           - 'npm'
           - 'shellcheck'
