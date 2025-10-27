@@ -109,6 +109,7 @@
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
+        - 'config/nvim/lua/plugins/completion.lua'
         - 'config/nvim/lua/plugins/conform.lua'
         - 'config/nvim/lua/plugins/init.lua'
         - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
