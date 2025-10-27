@@ -9,7 +9,7 @@
 
 - block:
     - name: Linux - install pip packages
-      ansible.builtin.pip::
+      ansible.builtin.pip:
         name: "{{ ansible_loop.allitems }}"
         executable: pip3
         state: latest
