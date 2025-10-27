@@ -55,6 +55,7 @@
     - name: macOS - install homebrew packages
       community.general.homebrew:
         name:
+          - 'ansible-lint'
           - 'isort'
           - 'npm'
           - 'shellcheck'
