@@ -4,5 +4,6 @@ vim.opt.laststatus = 2
 vim.opt.mouse = ""
 vim.opt.showtabline = 2
 vim.opt.showmode = false
+vim.opt.signcolumn = "yes" -- prevent layout shift when lsp diagnotics shown
 vim.opt.termguicolors = true
 vim.opt.backspace = { "indent", "eol", "start" }
