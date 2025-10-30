@@ -78,7 +78,7 @@
 
     - name: Install additional dependencies
       ansible.builtin.import_tasks: additional_dependencies.yml
-      tags: ['additional_dependencies']
+      tags: ['additional_dependencies', 'additional_deps']
 
   tags: ['vim', 'install', 'dependencies']
 
