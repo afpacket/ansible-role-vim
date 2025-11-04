@@ -112,12 +112,12 @@
         - 'config/nvim/lua/config/options.lua'
         - 'config/nvim/lua/plugins/completion.lua'
         - 'config/nvim/lua/plugins/conform.lua'
+        - 'config/nvim/lua/plugins/git.lua'
         - 'config/nvim/lua/plugins/init.lua'
         - 'config/nvim/lua/plugins/nvim-lspconfig.lua'
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
         - 'config/nvim/lua/plugins/nvim-telescope.lua'
         - 'config/nvim/lua/plugins/nvim-treesitter.lua'
-        - 'config/nvim/lua/plugins/vim-fugitive.lua'
 
   tags: ['vim', 'config']
 
