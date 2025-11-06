@@ -8,7 +8,7 @@
   tags: always
 
 - block:
-    - name: Linux - install pip packages (centos stream)
+    - name: Linux - install pip packages (centos stream and rhel)
       ansible.builtin.pip:
         name: "{{ ansible_loop.allitems }}"
         executable: pip3.13
@@ -21,7 +21,7 @@
         - black
       tags: ['pip', 'pip3', 'python']
       when:
-        - ansible_facts['distribution'] == "CentOS"
+        - ansible_facts['distribution'] in ["CentOS", "RedHat"]
         - ansible_facts['distribution_major_version'] == "9"
 
     - name: Linux - install packages
