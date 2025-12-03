@@ -50,7 +50,7 @@
           - python3-neovim
           - uv
         state: latest
-      when: ansible_distribution == "Fedora"
+      when: ansible_facts['distribution'] == "Fedora"
 
     - name: macOS - install homebrew packages
       community.general.homebrew:
