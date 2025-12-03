@@ -7,10 +7,11 @@ vim.lsp.enable({
 })
 
 vim.keymap.set("n", "<Leader>d", vim.diagnostic.open_float)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+-- default keymappings do not open float by default so explicitly setting
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Jump to the previous diagnostic in the current buffer" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Jump to the next diagnostic in the current buffer" })
 vim.diagnostic.config({
-   float = { border = "rounded" },
+  float = { border = "rounded" },
 })
 
 -- disable lsp syntax highlighting

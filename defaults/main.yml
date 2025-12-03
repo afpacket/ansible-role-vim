@@ -1,5 +1,6 @@
 nodejs_package_name: "{{ 'nodejs-npm' if ansible_facts['distribution'] == 'Fedora' else 'npm' }}"
 stylua_version: "2.3.0"
+work: false
 yamlfmt_version: "0.20.0"
 zellij: false
 zellij_version: "0.41.2"

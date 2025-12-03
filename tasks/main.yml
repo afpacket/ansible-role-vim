@@ -118,6 +118,17 @@
         - 'config/nvim/lua/plugins/nvim-lualine.lua'
         - 'config/nvim/lua/plugins/nvim-telescope.lua'
         - 'config/nvim/lua/plugins/nvim-treesitter.lua'
+        - 'config/nvim/lua/plugins/which-key.lua'
+
+    - name: copy neovim config file(s) for work
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: "0600"
+      when: work|bool
+      loop:
+        - 'config/nvim/lua/plugins/copilot.lua'
 
   tags: ['vim', 'config']
 
