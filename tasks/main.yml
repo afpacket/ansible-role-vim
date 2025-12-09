@@ -132,6 +132,37 @@
 
   tags: ['vim', 'config']
 
+# ghostty
+- block:
+    - name: ghostty - create directories
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/{{ item }}"
+        state: directory
+        owner: "{{ ansible_env.USER }}"
+        mode: "0700"
+      loop:
+        - ".config/ghostty"
+        - ".config/ghostty/themes"
+
+    - name: ghostty - copy config
+      ansible.builtin.template:
+        src: ghostty.config.j2
+        dest: "{{ ansible_env.HOME }}/.config/ghostty/config"
+        owner: "{{ ansible_env.USER }}"
+        mode: "0600"
+
+    - name: ghostty - copy theme(s)
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: "0600"
+      loop:
+        - 'config/ghostty/themes/Citruszestcustom'
+
+  when: ghostty|bool
+  tags: ghostty
+
 - name: zellij - import tasks
   ansible.builtin.import_tasks: zellij.yml
   become: true
