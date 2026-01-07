@@ -92,7 +92,8 @@
       loop:
         - ".vim"
         - ".config/nvim"
-        - ".config/nvim/lsp"
+        - ".config/nvim/after"
+        - ".config/nvim/after/lsp"
         - ".config/nvim/lua"
         - ".config/nvim/lua/config"
         - ".config/nvim/lua/plugins"
@@ -105,8 +106,6 @@
         mode: "0600"
       loop:
         - 'config/nvim/init.lua'
-        - 'config/nvim/lsp/pyright.lua'
-        - 'config/nvim/lsp/terraformls.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
         - 'config/nvim/lua/config/options.lua'
@@ -119,6 +118,15 @@
         - 'config/nvim/lua/plugins/nvim-telescope.lua'
         - 'config/nvim/lua/plugins/nvim-treesitter.lua'
         - 'config/nvim/lua/plugins/which-key.lua'
+
+    - name: copyneovim config template(s)
+      ansible.builtin.template:
+        src: "{{ item }}.j2"
+        dest: "{{ ansible_env.HOME }}/.{{ item }}"
+        owner: "{{ ansible_env.USER }}"
+        mode: 0600
+      with_items:
+        - 'config/nvim/after/lsp/ansiblels.lua'
 
     - name: copy neovim config file(s) for work
       ansible.builtin.copy:

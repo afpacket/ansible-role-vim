@@ -1,0 +1,9 @@
+return {
+  settings = {
+    ansible = {
+      python = {
+        interpreterPath = "{{ 'python3.13' if ansible_facts['distribution'] in ['CentOS', 'RedHat'] and ansible_facts['distribution_major_version'] == '9' else 'python' }}",
+      },
+    },
+  },
+}
