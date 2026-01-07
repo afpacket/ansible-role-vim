@@ -6,7 +6,7 @@ vim.lsp.enable({
   "terraformls",
 })
 
-vim.keymap.set("n", "<Leader>d", vim.diagnostic.open_float)
+vim.keymap.set("n", "<Leader>d", vim.diagnostic.open_float, { desc = "Show diagnostics in a floating window" })
 -- default keymappings do not open float by default so explicitly setting
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Jump to the previous diagnostic in the current buffer" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Jump to the next diagnostic in the current buffer" })
