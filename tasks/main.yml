@@ -75,6 +75,7 @@
         - '@ansible/ansible-language-server'
         - 'bash-language-server'
         - 'pyright'
+        - 'yaml-language-server'
 
     - name: Install additional dependencies
       ansible.builtin.import_tasks: additional_dependencies.yml
