@@ -2,7 +2,7 @@ vim.lsp.enable({
   "ansiblels",
   "bashls",
   "gopls",
-  "helm_ls"
+  "helm_ls",
   "pyright",
   "terraformls",
   "yamlls",
