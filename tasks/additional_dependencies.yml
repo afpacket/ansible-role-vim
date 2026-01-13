@@ -1,5 +1,43 @@
 - block:
     - block:
+        - name: helm_ls - get release info
+          ansible.builtin.uri:
+            url: "https://api.github.com/repos/mrjosh/helm-ls/releases/tags/v{{ helmls_version }}"
+            method: GET
+            return_content: true
+            body_format: json
+            status_code: 200
+          register: helmls_release_info
+
+        - name: helm_ls - download binary
+          become: true
+          ansible.builtin.get_url:
+            url: "https://github.com/mrjosh/helm-ls/releases/download/v{{ helmls_version }}/{{ item.name }}"
+            dest: "/usr/local/bin/helm_ls"
+            headers:
+              Accept: application/json
+            checksum: "{{ item.digest }}"
+          loop: "{{ helmls_release_info.json.assets }}"
+          when:
+            - "ansible_facts['system'] | lower in item.name"
+            - "cpu_arch_alt_name[ansible_facts['architecture']] in item.name"
+            - "'sha256sum' not in item.name"
+            #- "item.name == 'helm_ls_' + ansible_facts['system'] + '_' + cpu_arch_alt_name[ansible_facts['architecture']"
+          register: helmls_download_response
+
+        - name: helm_ls - set permissions
+          become: true
+          ansible.builtin.file:
+            path: /usr/local/bin/helm_ls
+            state: file
+            owner: root
+            group: root
+            mode: 0755
+
+      when: ansible_facts['system'] == 'Linux'
+      tags: ["helmls", "helm_ls"]
+
+    - block:
         - name: yamlfmt - get release info
           ansible.builtin.uri:
             url: "https://api.github.com/repos/google/yamlfmt/releases/tags/v{{ yamlfmt_version }}"
@@ -25,7 +63,7 @@
           loop: "{{ yamlfmt_release_info.json.assets }}"
           when:
             - "item.name == 'yamlfmt_' + yamlfmt_version + '_' + ansible_facts['system'] + '_' + yamlfmt_arch + '.tar.gz'"
-          register: yamlfmt_download_reponse
+          register: yamlfmt_download_response
 
         - name: yamlfmt - unarchive
           become: true
@@ -54,7 +92,7 @@
             - "/usr/local/bin/README.md"
 
       when: ansible_facts['system'] == 'Linux'
-      tags: ['yamlfmt']
+      tags: ["yamlfmt"]
 
     - block:
         - name: stylua - get release info
@@ -77,7 +115,7 @@
           loop: "{{ stylua_release_info.json.assets }}"
           when:
             - "item.name == 'stylua-linux-' + ansible_facts['architecture'] + '.zip'"
-          register: stylua_download_reponse
+          register: stylua_download_response
 
         - name: stylua - unarchive
           become: true
@@ -93,6 +131,6 @@
             state: absent
           loop:
             - "/usr/local/src/stylua-linux-{{ ansible_facts['architecture'] }}.zip"
-      
+
       when: ansible_facts['system'] == 'Linux'
-      tags: ['stylua']
+      tags: ["stylua"]
