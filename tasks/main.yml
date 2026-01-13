@@ -108,6 +108,7 @@
         mode: "0600"
       loop:
         - 'config/nvim/init.lua'
+        - 'config/nvim/filetype.lua'
         - 'config/nvim/after/lsp/yamlls.lua'
         - 'config/nvim/lua/config/lazy.lua'
         - 'config/nvim/lua/config/lsp.lua'
