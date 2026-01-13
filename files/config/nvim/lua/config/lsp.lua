@@ -4,6 +4,7 @@ vim.lsp.enable({
   "gopls",
   "pyright",
   "terraformls",
+  "yamlls",
 })
 
 vim.keymap.set("n", "<Leader>d", vim.diagnostic.open_float, { desc = "Show diagnostics in a floating window" })
