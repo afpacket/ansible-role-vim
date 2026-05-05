@@ -67,7 +67,7 @@
       when: ansible_facts['distribution'] == "MacOSX"
 
     - name: Install node.js packages
-      become: true
+      become: "{{ npm_install_global }}"
       community.general.npm:
         name: "{{ item }}"
         global: "{{ npm_install_global }}"
