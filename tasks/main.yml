@@ -71,6 +71,7 @@
       community.general.npm:
         name: "{{ item }}"
         global: "{{ npm_install_global }}"
+        path: "{{ npm_install_path }}"
       tags: ['lsp', 'npm']
       loop:
         - '@ansible/ansible-language-server'
@@ -99,6 +100,8 @@
         - ".config/nvim/lua"
         - ".config/nvim/lua/config"
         - ".config/nvim/lua/plugins"
+        - ".local"
+        - ".local/bin"
 
     - name: copy neovim config file(s)
       ansible.builtin.copy:

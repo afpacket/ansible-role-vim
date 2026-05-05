@@ -7,6 +7,7 @@ ghostty_super_key: "{{ 'ctrl' if ansible_facts['distribution'] == 'MacOSX' else 
 helmls_version: "0.5.4"
 nodejs_package_name: "{{ 'nodejs-npm' if ansible_facts['distribution'] == 'Fedora' else 'npm' }}"
 npm_install_global: true
+npm_install_path: "{{ ansible_env.HOME }}/.local/bin"
 stylua_version: "2.3.1"
 work: false
 yamlfmt_version: "0.21.0"
