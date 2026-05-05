@@ -66,11 +66,11 @@
       tags: ['brew', 'homebrew']
       when: ansible_facts['distribution'] == "MacOSX"
 
-    - name: Install node.js packages globally
+    - name: Install node.js packages
       become: true
       community.general.npm:
         name: "{{ item }}"
-        global: true
+        global: "{{ npm_install_global }}"
       tags: ['lsp', 'npm']
       loop:
         - '@ansible/ansible-language-server'
